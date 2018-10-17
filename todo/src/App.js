@@ -1,26 +1,76 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import TodoListTemplate from './components/TodoListTemplate';
+import TodoItemList from './components/TodoItemList';
+import Form from './components/Form';
 
 class App extends Component {
+
+  id = 3;
+
+  state = {
+    input : '',
+    todos : [
+        { id : 0, text: '11', checked : false},
+        { id : 1, text: '22', checked : false},
+        { id : 2, text: '33', checked : false},
+    ]
+  };
+
+  handleChange = (e) => {
+      this.setState({
+    input : e.target.value
+    })
+  }
+
+  handleKeyPress = (e) => {
+      if(e.key === 'Enter') {
+        this.handleCreate();
+      }
+  }
+
+  handleCreate = () => {
+    const { input, todos } = this.state;
+
+    this.setState({
+        input : '',
+        todos : todos.concat({ id : todos.length - 1 , text : input, checked : false})
+    })
+  }
+
+  handleToggle = (id) => {
+      const { todos} = this.state;
+
+      const index = todos.findIndex( (todo) => todo.id === id)
+
+      this.setState({
+          todos : [
+              ...todos.slice(0, index),
+              {
+                  ...todos[index],
+                  checked : !todos[index].checked
+              },
+              ...todos.slice(index+1)
+          ]
+      })
+  }
+
+  handleRemove = () => {
+
+  }
+
   render() {
+      const { input, todos} = this.state;
+      const {  handleKeyPress, handleChange, handleToggle, onRemove, handleCreate} = this;
+
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+        <TodoListTemplate form={<Form value={input}
+                                      onChange={handleChange}
+                                      onKeyPress={handleKeyPress}
+                                      onCreate={handleCreate}/>}>
+          <TodoItemList todos={todos}
+                        onToggle={handleToggle}
+                        onRemove={onRemove}/>
+        </TodoListTemplate>
     );
   }
 }
