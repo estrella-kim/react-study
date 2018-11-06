@@ -9,11 +9,10 @@ class App extends Component {
 
   state = {
     input : '',
-    editingText : '',
     todos : [
-        { id : 0, text: '11', checked : false, edited : false},
-        { id : 1, text: '22', checked : false, edited : false},
-        { id : 2, text: '33', checked : false, edited : false},
+        { id : 0, text: '11', checked : false},
+        { id : 1, text: '22', checked : false},
+        { id : 2, text: '33', checked : false},
     ]
   };
   handleChange = (e) => {
@@ -33,13 +32,14 @@ class App extends Component {
 
     this.setState({
         input : '',
-        todos : todos.concat({ id : todos.length - 1 , text : input, checked : false, edited : false})
+        todos : todos.concat({ id : todos.length - 1 , text : input, checked : false})
     })
   }
 
   handleToggle = (id) => {
       const { todos} = this.state;
 
+      console.log('toggle')
       const index = todos.findIndex( (todo) => todo.id === id)
 
       this.setState({
@@ -69,60 +69,28 @@ class App extends Component {
       })
   }
 
-  handleEditFlag = (id) => {
-      const { todos} = this.state;
-
-      const index = todos.findIndex( (todo) => todo.id === id)
-
-      this.setState({
-          ...this.state,
-          todos : [
-              ...todos.slice(0, index),
-              {
-                  ...todos[index],
-                  edited : !todos[index].edited
-              },
-              ...todos.slice(index+1)
-          ]
-      })
-  }
-
-  handleEditChange = (e, id) => {
-      const { todos} = this.state;
-
-      this.setState({
-          todos,
-          editingText : e.target.value
-      })
-  }
-
-    handleUpdate = (e, id) => {
-        const { todos, editingText} = this.state;
+    handleUpdate = (editText, id) => {
+        const { todos } = this.state;
         const index = todos.findIndex( (todo) => todo.id === id);
 
-        e.stopPropagation();
-
-        if(e.key === 'Enter') {
-            this.setState({
-                todos : [
-                    ...todos.slice(0, index),
-                    {
-                        ...todos[index],
-                        text : editingText,
-
-                    },
-                    ...todos.slice(index+1)
-                ],
-                editingText : ''
-            })
-        }
+        this.setState({
+            todos : [
+                ...todos.slice(0, index),
+                {
+                    ...todos[index],
+                    text : editText
+                },
+                ...todos.slice(index+1)
+            ]
+        })
 
     }
 
 
+
   render() {
-      const { input, todos, editingText} = this.state;
-      const {  handleKeyPress, handleChange, handleToggle, handleRemove, handleCreate, handleEditFlag, handleUpdate, handleEditChange } = this;
+      const { input, todos} = this.state;
+      const {  handleKeyPress, handleChange, handleToggle, handleRemove, handleCreate, handleUpdate} = this;
 
     return (
         <TodoListTemplate form={<Form value={input}
@@ -132,12 +100,9 @@ class App extends Component {
 
         />}>
           <TodoItemList todos={todos}
-                        editingText={editingText}
                         onToggle={handleToggle}
                         onRemove={handleRemove}
-                        onToggleEdit={handleEditFlag}
                         onUpdate={handleUpdate}
-                        onEditChange={handleEditChange}
           />
         </TodoListTemplate>
     );
