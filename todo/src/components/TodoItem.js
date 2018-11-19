@@ -5,10 +5,7 @@ import styles from './TodoItem.css';
 
 const cx = classNames.bind(styles);
 
-
 class TodoItem extends Component {
-
-
     state = {
         editFlag : false,
         editText : ''
