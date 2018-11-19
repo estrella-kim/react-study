@@ -6,6 +6,7 @@ class TodoItemList extends Component {
     render () {
         const { todos, onToggle, onRemove, onUpdate} = this.props;
 
+        console.log(todos);
         const todoList = todos.map((currentValue) => (
             <TodoItem todoItem={currentValue}
                       key={currentValue.id}
@@ -13,7 +14,6 @@ class TodoItemList extends Component {
                       onRemove={onRemove}
                       onUpdate={onUpdate}
                 ></TodoItem>
-
         ));
         return (
             <div>
