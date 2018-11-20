@@ -1,13 +1,18 @@
 import React, { Component} from 'react';
-import TodoContainer from './containers/TodoContainer';
-import TodoListContainer from './containers/TodoListContainer';
+import { Route } from 'react-router-dom';
+
+import Product from './pages/Product';
+import Eventview from './pages/Eventview';
 
 class App extends Component {
 
   render() {
     return (
-        <TodoContainer/>
-    );
+        <div>
+          <Route exact path="/product" component={Product}/>
+          <Route exact path="/event" component={Eventview}/>
+        </div>
+    )
   }
 }
 

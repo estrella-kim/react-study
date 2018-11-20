@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,} from 'react';
 import './TodoItemList.css';
 import TodoItem from './TodoItem'
 
@@ -12,7 +12,7 @@ class TodoItemList extends Component {
                       onToggle={onToggle}
                       onRemove={onRemove}
                       onUpdate={onUpdate}
-                ></TodoItem>
+            ></TodoItem>
         ));
         return (
             <div>
